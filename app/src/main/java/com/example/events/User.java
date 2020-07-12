@@ -2,11 +2,19 @@ package com.example.events;
 
 public class User {
     private String mEmail;
-    private String mPassword;
+    private String mId;
 
-    public User(String email, String password) {
+    public User(String email, String id) {
         mEmail = email;
-        mPassword = password;
+        mId = id;
+    }
+
+    public String getUserEmail(){
+        return mEmail;
+    }
+
+    public String getUserID(){
+        return mId;
     }
 
 }
