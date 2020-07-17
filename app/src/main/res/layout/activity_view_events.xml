@@ -4,15 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewEventActivity">
-
-    <Button
-        android:id="@+id/settingsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="304dp" />
+    tools:context=".ViewEventsActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
