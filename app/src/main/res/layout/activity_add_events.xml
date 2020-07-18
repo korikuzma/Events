@@ -13,7 +13,7 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:paddingTop="50dp"
+            android:paddingTop="65dp"
             android:gravity="center">
             <TextView
                 android:id="@+id/eventName"
@@ -50,8 +50,8 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:id="@+id/addDescriptionBtn"
-                android:layout_width="150dp"
+                android:id="@+id/addDescription"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:gravity="top|left"
                 android:hint="Description"
@@ -82,7 +82,7 @@
                 android:layout_margin="10dp"/>
 
             <EditText
-                android:id="@+id/addDateBtn"
+                android:id="@+id/addDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="mm/dd/yyyy"
@@ -93,9 +93,6 @@
                 android:layout_margin="10dp"/>
 
         </TableRow>
-
-
-
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -111,7 +108,7 @@
                 />
 
             <EditText
-                android:id="@+id/addTimeBtn"
+                android:id="@+id/addTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="hh:mm a"
@@ -121,8 +118,6 @@
                 android:layout_column="2"
                 android:layout_margin="10dp"/>
         </TableRow>
-
-
 
         <TableRow
             android:layout_width="fill_parent"
@@ -139,7 +134,7 @@
                 android:layout_margin="10dp" />
 
             <EditText
-                android:id="@+id/addLocationBtn"
+                android:id="@+id/addLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Residence Hall Name"
@@ -149,8 +144,6 @@
                 android:layout_column="2"
                 android:layout_margin="10dp"/>
         </TableRow>
-
-
 
         <TableRow
             android:layout_width="fill_parent"
@@ -166,7 +159,7 @@
                 android:layout_margin="10dp" />
 
             <EditText
-                android:id="@+id/addCategoryBtn"
+                android:id="@+id/addCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="DI, C, W, or L"
@@ -190,12 +183,6 @@
                 android:text="Submit Event"
                 android:layout_column="1"
                 android:layout_margin="10dp" />
-
         </TableRow>
-
-
-
-
-
     </TableLayout>
 </ScrollView>
