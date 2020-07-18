@@ -91,8 +91,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 DocumentReference docRef = db.collection("users").document((user.getUserID()));
                 Map<String, String> mapUser = new HashMap<>();
                 mapUser.put("email", (user.getUserEmail()));
-                //db.collection("users").document("email").set(mapUser);
-
 
                 // Create new user if one does not exist already in Firebase
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

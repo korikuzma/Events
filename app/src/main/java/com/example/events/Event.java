@@ -3,6 +3,7 @@ package com.example.events;
 public class Event {
     private String mName;
     private String mDescription;
+    private String mId;
     private String mDate;
     private String mTime;
     private String mLocation;
@@ -17,8 +18,16 @@ public class Event {
         mCategory = category;
     }
 
+    public void setmId(String Id){
+        mId = Id;
+    }
+
+    public String getmId(){
+        return mId;
+    }
+
     // Returns whether date is in the form of mm/dd/yyyy
-    // Date must occur after 2020
+    // Date must occur between 2000-2099
     public boolean isValidDate(String strDate){
         String pattern= "^(1[0-2]|0[1-9])/(3[01]|[12][0-9]|0[1-9])/20[2-9][0-9]$";
         return strDate.matches(pattern);
@@ -26,7 +35,7 @@ public class Event {
 
     // Returns whether time is in the form of hh:mm a
     public boolean isValidTime(String strTime){
-        String pattern = "^(0[1-9]|1[0-2]):([0-5][0-9])\\s(AM|A|PM|P)$";
+        String pattern = "^(0[1-9]|1[0-2]):([0-5][0-9])\\s(A|P)$";
         return (strTime.toUpperCase()).matches(pattern);
     }
 
