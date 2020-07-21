@@ -42,15 +42,29 @@ public class ViewEventsActivity extends AppCompatActivity {
                         TextView tvLocation = findViewById(R.id.location);
                         TextView tvCategory = findViewById(R.id.category);
 
-                        tvName.setText("Name: " + document.get("name"));
-                        tvDescription.setText("Description: " + document.get("description"));
-                        tvDate.setText("Date: " + document.get("date"));
-                        tvTime.setText("Time: " + document.get("time"));
-                        tvLocation.setText("Location: " + document.get("location"));
-                        tvCategory.setText("Category: " + document.get("category"));
+                        tvName.setText((document.get("name")).toString());
+                        tvDescription.setText((document.get("description")).toString());
+                        tvDate.setText((document.get("date")).toString());
+                        tvTime.setText((document.get("time")).toString() + "M");
+                        tvLocation.setText((document.get("location")).toString());
+                        tvCategory.setText(categoryConversion((document.get("category")).toString()));
                     }
                 }
             }
         });
+    }
+
+    public String categoryConversion(String category){
+        switch(category){
+            case "DI":
+                return "(DIVERSITY & INCLUSION)";
+            case "L":
+                return "(LEARNING)";
+            case "C":
+                return "(COMMUNITY)";
+            case "W":
+                return "(WELLNES)";
+        }
+        return null;
     }
 }
