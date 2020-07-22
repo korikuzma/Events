@@ -16,12 +16,19 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AddEventsActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private ArrayList<String> resHallsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,8 @@ public class AddEventsActivity extends AppCompatActivity {
 
         // Access a Cloud Firestore instance from current Activity
         db = FirebaseFirestore.getInstance();
+
+        resHallsList = populateResHalls();
     }
 
     @Override
@@ -41,6 +50,7 @@ public class AddEventsActivity extends AppCompatActivity {
         final EditText eventDescription = (EditText)findViewById(R.id.addDescription);
         final EditText eventDate = (EditText)findViewById(R.id.addDate);
         final EditText eventTime = (EditText)findViewById(R.id.addTime);
+        final EditText eventResHall = (EditText)findViewById(R.id.addResHall);
         final EditText eventLocation = (EditText)findViewById(R.id.addLocation);
         final EditText eventCategory = (EditText)findViewById(R.id.addCategory);
 
@@ -52,15 +62,16 @@ public class AddEventsActivity extends AppCompatActivity {
                 String  eventDescriptionStr = eventDescription.getText().toString().toUpperCase().trim();
                 String  eventDateStr = eventDate.getText().toString().trim();
                 String  eventTimeStr = eventTime.getText().toString().toUpperCase().trim();
+                String  eventResHallStr = eventResHall.getText().toString().toUpperCase().trim();
                 String  eventLocationStr = eventLocation.getText().toString().toUpperCase().trim();
                 String  eventCategoryStr = eventCategory.getText().toString().toUpperCase().trim();
 
                 Event event = new Event(eventNameStr, eventDescriptionStr, eventDateStr,
-                        eventTimeStr, eventLocationStr, eventCategoryStr);
+                        eventTimeStr, eventResHallStr, eventLocationStr, eventCategoryStr);
 
                 // If form is filled out correctly, go back to MainEventsActivity
                 if(event.allValid(event.isValidDate(eventDateStr), event.isValidTime(eventTimeStr),
-                        event.isValidCategory(eventCategoryStr))){
+                        event.isValidCategory(eventCategoryStr), event.isValidResHall(eventResHallStr, resHallsList))){
 
                     // Adds event to firebase
                     DocumentReference docRef = db.collection("events").document();
@@ -69,6 +80,7 @@ public class AddEventsActivity extends AppCompatActivity {
                     docEventData.put("description", eventDescriptionStr);
                     docEventData.put("date", eventDateStr);
                     docEventData.put("time", eventTimeStr);
+                    docEventData.put("reshall", eventResHallStr);
                     docEventData.put("location", eventLocationStr);
                     docEventData.put("category", eventCategoryStr);
 
@@ -82,5 +94,27 @@ public class AddEventsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // Reads csv file containing res halls and adds it to array list
+    public ArrayList<String> populateResHalls(){
+        InputStream resHallsIS = getResources().openRawResource(R.raw.reshalls);
+        ArrayList<String> list = new ArrayList<>();
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(resHallsIS, Charset.forName("UTF-8"))
+        );
+
+        String line;
+        try {
+            while ( (line=reader.readLine()) != null) {
+                String[] words = line.split("\\\\r?\\\\n");
+                list.add(words[0]);
+            }
+        }
+        catch (IOException e) {
+            Log.d("AddEventsActivity", "Error reading category data file.");
+        }
+        return list;
+
     }
 }

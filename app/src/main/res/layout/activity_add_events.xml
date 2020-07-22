@@ -13,7 +13,7 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:paddingTop="65dp"
+            android:paddingTop="30dp"
             android:gravity="center">
             <TextView
                 android:id="@+id/eventName"
@@ -126,10 +126,36 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/eventResHall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Residence Hall"
+                android:layout_column="1"
+                android:layout_margin="10dp" />
+
+            <EditText
+                android:id="@+id/addResHall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Residence Hall Name"
+                android:inputType="text"
+                android:maxLength="22"
+                tools:ignore="Autofill"
+                android:layout_column="2"
+                android:layout_margin="10dp"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingTop="20dp"
+            android:gravity="center">
+
+            <TextView
                 android:id="@+id/eventLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location of Event"
+                android:text="Location"
                 android:layout_column="1"
                 android:layout_margin="10dp" />
 
@@ -137,7 +163,7 @@
                 android:id="@+id/addLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Residence Hall Name"
+                android:hint="Location of Event"
                 android:inputType="text"
                 android:maxLength="22"
                 tools:ignore="Autofill"

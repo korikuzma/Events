@@ -1,5 +1,16 @@
 package com.example.events;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+
 public class Event {
     private String mName;
     private String mDescription;
@@ -8,12 +19,14 @@ public class Event {
     private String mTime;
     private String mLocation;
     private String mCategory;
+    private String mResHall;
 
-    public Event(String name, String description, String date, String time, String location, String category){
+    public Event(String name, String description, String date, String time, String resHall, String location, String category){
         mName = name;
         mDescription = description;
         mDate = date;
         mTime = time;
+        mResHall = resHall;
         mLocation = location;
         mCategory = category;
     }
@@ -45,9 +58,14 @@ public class Event {
         return (strCategory.toUpperCase()).matches(pattern);
     }
 
+    // Returns whether reshall entered is a valid res hall at OSU
+    public boolean isValidResHall(String strResHall, ArrayList resHallsList){
+        return resHallsList.contains(strResHall);
+    }
+
     // Returns whether all variables are valid and not null
-    public boolean allValid(boolean boolDate, boolean boolTime, boolean boolCategory){
-        return boolDate && boolTime && boolCategory && (mName != null && !mName.isEmpty()) &&
+    public boolean allValid(boolean boolDate, boolean boolTime, boolean boolCategory, boolean boolResHall){
+        return boolDate && boolTime && boolCategory && boolResHall && (mName != null && !mName.isEmpty()) &&
                 (mDescription != null && !mDescription.isEmpty()) && (mLocation != null && !mLocation.isEmpty());
     }
 }

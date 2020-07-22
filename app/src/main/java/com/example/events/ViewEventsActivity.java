@@ -39,6 +39,7 @@ public class ViewEventsActivity extends AppCompatActivity {
                         TextView tvDescription = findViewById(R.id.description);
                         TextView tvDate = findViewById(R.id.date);
                         TextView tvTime = findViewById(R.id.time);
+                        TextView tvResHall = findViewById(R.id.resHall);
                         TextView tvLocation = findViewById(R.id.location);
                         TextView tvCategory = findViewById(R.id.category);
 
@@ -46,6 +47,7 @@ public class ViewEventsActivity extends AppCompatActivity {
                         tvDescription.setText((document.get("description")).toString());
                         tvDate.setText((document.get("date")).toString());
                         tvTime.setText((document.get("time")).toString() + "M");
+                        tvResHall.setText((document.get("reshall")).toString());
                         tvLocation.setText((document.get("location")).toString());
                         tvCategory.setText(categoryConversion((document.get("category")).toString()));
                     }
