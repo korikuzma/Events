@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 9001;
     private FirebaseFirestore db;
     private User user;
+    private String email = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +86,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 // Creates a new user
                 user = new User((account.getEmail()), account.getId());
-                Log.d(TAG, "User Email: " + user.getUserEmail());
+                email = user.getUserEmail();
+
+                Log.d(TAG, "User Email: " + email);
 
                 DocumentReference docRef = db.collection("users").document((user.getUserID()));
                 Map<String, String> mapUser = new HashMap<>();
-                mapUser.put("email", (user.getUserEmail()));
+                mapUser.put("email", email);
 
                 // Create new user if one does not exist already in Firebase
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -152,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void updateUI(FirebaseUser user) {
+    public void updateUI(FirebaseUser user) {
         if (user != null){
             Intent i = new Intent(LoginActivity.this, MainEventsActivity.class);
             LoginActivity.this.startActivity(i);

@@ -4,8 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class MainEventsActivity extends AppCompatActivity {
 
@@ -23,6 +29,14 @@ public class MainEventsActivity extends AppCompatActivity {
         Button settingsBtn = findViewById(R.id.settingsBtn);
         Button viewEventsBtn = findViewById(R.id.viewEventsBtn);
         Button addEventsBtn = findViewById(R.id.addEventsBtn);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(MainEventsActivity.this, gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        showAddEventsButton(addEventsBtn, account.getEmail());
 
         // When settings button clicked, opens SettingsActivity
         settingsBtn.setOnClickListener(new View.OnClickListener(){
@@ -50,6 +64,16 @@ public class MainEventsActivity extends AppCompatActivity {
                 MainEventsActivity.this.startActivity(i);
             }
         });
+    }
+
+    // show button if admin email
+    public void showAddEventsButton(Button addEventsBtn, String email){
+        if (email.equals("korikuzma@gmail.com"))
+        {
+            addEventsBtn.setVisibility(View.VISIBLE);
+        } else {
+            addEventsBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
 }

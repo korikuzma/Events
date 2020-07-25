@@ -2,59 +2,80 @@ package com.example.events;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class ViewEventsActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private FirestoreRecyclerAdapter adapter;
+    private RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_events);
+
+        db = FirebaseFirestore.getInstance();
+        rv = (RecyclerView)findViewById(R.id.recycler_view);
+
+        // query
+        Query query = db.collection("events").orderBy("date");
+
+        //recycler options
+        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
+                .setQuery(query, Event.class)
+                .build();
+
+        adapter = new FirestoreRecyclerAdapter<Event, EventViewHolder>(options) {
+            @NonNull
+            @Override
+            public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
+                return new EventViewHolder(v);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull EventViewHolder holder, int position, @NonNull Event model) {
+                holder.eventName.setText(model.getName());
+                holder.eventDescription.setText(model.getDescription());
+                holder.eventDate.setText(model.getDate());
+                holder.eventTime.setText(model.getTime());
+                holder.eventResHall.setText(model.getReshall());
+                holder.eventLocation.setText(model.getLocation());
+                holder.eventCategory.setText(model.getCategory());
+            }
+        };
+
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setAdapter(adapter);
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-
-        db = FirebaseFirestore.getInstance();
-
-        db.collection("events").document("9aM0l3P8nwMm02tKmvwa").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-
-                        TextView tvName = findViewById(R.id.name);
-                        TextView tvDescription = findViewById(R.id.description);
-                        TextView tvDate = findViewById(R.id.date);
-                        TextView tvTime = findViewById(R.id.time);
-                        TextView tvResHall = findViewById(R.id.resHall);
-                        TextView tvLocation = findViewById(R.id.location);
-                        TextView tvCategory = findViewById(R.id.category);
-
-                        tvName.setText((document.get("name")).toString());
-                        tvDescription.setText((document.get("description")).toString());
-                        tvDate.setText((document.get("date")).toString());
-                        tvTime.setText((document.get("time")).toString() + "M");
-                        tvResHall.setText((document.get("reshall")).toString());
-                        tvLocation.setText((document.get("location")).toString());
-                        tvCategory.setText(categoryConversion((document.get("category")).toString()));
-                    }
-                }
-            }
-        });
+    protected void onStart(){
+        super.onStart();
+        adapter.startListening();
     }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        adapter.stopListening();
+    }
+
 
     public String categoryConversion(String category){
         switch(category){
@@ -68,5 +89,30 @@ public class ViewEventsActivity extends AppCompatActivity {
                 return "(WELLNES)";
         }
         return null;
+    }
+
+    private class EventViewHolder extends RecyclerView.ViewHolder {
+        CardView cv;
+        TextView eventName;
+        TextView eventDescription;
+        TextView eventDate;
+        TextView eventTime;
+        TextView eventResHall;
+        TextView eventLocation;
+        TextView eventCategory;
+
+        EventViewHolder(@NonNull View itemView) {
+            super(itemView);
+            cv = (CardView)itemView.findViewById(R.id.card_view);
+            eventName = (TextView)itemView.findViewById(R.id.name);
+            eventDescription = (TextView)itemView.findViewById(R.id.description);
+            eventDate = (TextView)itemView.findViewById(R.id.date);
+            eventTime = (TextView)itemView.findViewById(R.id.time);
+            eventResHall = (TextView)itemView.findViewById(R.id.resHall);
+            eventLocation = (TextView)itemView.findViewById(R.id.location);
+            eventCategory = (TextView)itemView.findViewById(R.id.category);
+        }
+
+
     }
 }
