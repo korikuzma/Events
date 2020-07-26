@@ -5,17 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ViewEventsActivity extends AppCompatActivity {
 
@@ -31,8 +34,8 @@ public class ViewEventsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView)findViewById(R.id.recycler_view);
 
-        // query
-        Query query = db.collection("events").orderBy("date");
+        // query to only show events that haven't occurred yet
+        Query query = db.collection("events").whereGreaterThan("timestamp", getCurrentTimestamp());
 
         //recycler options
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
@@ -76,19 +79,16 @@ public class ViewEventsActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
-
-    public String categoryConversion(String category){
-        switch(category){
-            case "DI":
-                return "(DIVERSITY & INCLUSION)";
-            case "L":
-                return "(LEARNING)";
-            case "C":
-                return "(COMMUNITY)";
-            case "W":
-                return "(WELLNES)";
+    public Timestamp getCurrentTimestamp(){
+        String str_date = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").format(new Date());
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+        Date date = null;
+        try {
+            date = (Date) formatter.parse(str_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        return null;
+        return new Timestamp(date.getTime());
     }
 
     private class EventViewHolder extends RecyclerView.ViewHolder {

@@ -14,7 +14,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,14 +73,15 @@ public class AddEventsActivity extends AppCompatActivity {
 
                     // Adds event to firebase
                     DocumentReference docRef = db.collection("events").document();
-                    Map<String, String> docEventData = new HashMap<>();
+                    Map<String, Object> docEventData = new HashMap<>();
                     docEventData.put("name", eventNameStr);
                     docEventData.put("description", eventDescriptionStr);
                     docEventData.put("date", eventDateStr);
-                    docEventData.put("time", eventTimeStr);
+                    docEventData.put("time", eventTimeStr + "M");
                     docEventData.put("reshall", eventResHallStr);
                     docEventData.put("location", eventLocationStr);
-                    docEventData.put("category", eventCategoryStr);
+                    docEventData.put("category", categoryConversion(eventCategoryStr));
+                    docEventData.put("timestamp", convertStrToTimestamp(eventDateStr, eventTimeStr));
 
                     event.setId(docRef.getId());
                     Log.d("EventID", "Event ID: " + event.getId());
@@ -87,6 +93,33 @@ public class AddEventsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public String categoryConversion(String category){
+        switch(category){
+            case "DI":
+                return "(DIVERSITY & INCLUSION)";
+            case "L":
+                return "(LEARNING)";
+            case "C":
+                return "(COMMUNITY)";
+            case "W":
+                return "(WELLNESS)";
+        }
+        return null;
+    }
+
+    //
+    public Timestamp convertStrToTimestamp(String str_date, String str_time){
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+        Date date = null;
+
+        try {
+            date = (Date) formatter.parse(str_date + " " + str_time + "M");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new Timestamp(date.getTime());
     }
 
     // Reads csv file containing res halls and adds it to array list
