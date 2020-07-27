@@ -6,7 +6,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +37,6 @@ public class ViewEventsActivity extends AppCompatActivity {
 
         // query to keep showing events that haven't happened or events that haven't ended (assumes one hour event)
         Query query = db.collection("events").whereGreaterThan("timestamp", getEndTimestamp());
-
-        Log.d("KUZMA", ""+ getEndTimestamp());
 
         //recycler options
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()

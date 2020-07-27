@@ -36,6 +36,7 @@ public class AddEventsActivity extends AppCompatActivity {
         // Access a Cloud Firestore instance from current Activity
         db = FirebaseFirestore.getInstance();
 
+        // populate arraylist with valid reshall names
         resHallsList = populateResHalls();
     }
 
@@ -82,7 +83,6 @@ public class AddEventsActivity extends AppCompatActivity {
                     docEventData.put("location", eventLocationStr);
                     docEventData.put("category", categoryConversion(eventCategoryStr));
                     docEventData.put("timestamp", convertStrToTimestamp(eventDateStr, eventTimeStr));
-
                     event.setId(docRef.getId());
                     Log.d("EventID", "Event ID: " + event.getId());
                     db.collection("events").document(event.getId()).set(docEventData);
@@ -95,6 +95,7 @@ public class AddEventsActivity extends AppCompatActivity {
         });
     }
 
+    // Converts acronym
     public String categoryConversion(String category){
         switch(category){
             case "DI":
@@ -109,7 +110,7 @@ public class AddEventsActivity extends AppCompatActivity {
         return null;
     }
 
-    //
+    // Converts string values to timestamp
     public Timestamp convertStrToTimestamp(String str_date, String str_time){
         DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
         Date date = null;

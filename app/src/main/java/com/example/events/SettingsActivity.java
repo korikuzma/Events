@@ -28,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    // Signs out of google account and returns to the login page
     public void signOut() {
 
         Button signOutBtn = findViewById(R.id.signOutBtn);
