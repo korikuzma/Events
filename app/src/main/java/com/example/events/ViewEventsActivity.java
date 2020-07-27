@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ViewEventsActivity extends AppCompatActivity {
@@ -34,8 +36,10 @@ public class ViewEventsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView)findViewById(R.id.recycler_view);
 
-        // query to only show events that haven't occurred yet
-        Query query = db.collection("events").whereGreaterThan("timestamp", getCurrentTimestamp());
+        // query to keep showing events that haven't happened or events that haven't ended (assumes one hour event)
+        Query query = db.collection("events").whereGreaterThan("timestamp", getEndTimestamp());
+
+        Log.d("KUZMA", ""+ getEndTimestamp());
 
         //recycler options
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
@@ -79,15 +83,32 @@ public class ViewEventsActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    public Timestamp getCurrentTimestamp(){
+    // Get one hour before timestamp
+    public Timestamp getEndTimestamp(){
         String str_date = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").format(new Date());
         DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
         Date date = null;
+
+        Calendar c = Calendar.getInstance();
+        try{
+            //Setting the date to the current date
+            c.setTime(formatter.parse(str_date));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
+        // Add one hour to timestamp
+        c.add(Calendar.HOUR_OF_DAY, -1);
+
+        //Date after adding the days to the given date
+        String newDate = formatter.format(c.getTime());
+
         try {
-            date = (Date) formatter.parse(str_date);
+            date = (Date) formatter.parse(newDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         return new Timestamp(date.getTime());
     }
 
