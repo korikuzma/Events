@@ -16,6 +16,7 @@
         android:textColor="@color/red"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="150dp"
         android:padding="20dp"/>
 
     <com.google.android.gms.common.SignInButton

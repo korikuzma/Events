@@ -7,4 +7,9 @@
     <color name="red">#E50914</color>
     <color name="redPastel">#ff6961</color>
     <color name="whiteOpacity">#99FFFFFF</color>
+    <color name="submitButton">#994ACFAC</color>
+    <color name="submitButtonPressed">#4ACFAC</color>
+    <color name="mainEventsButton">#997E8CE0</color>
+    <color name="mainEventsButtonPressed">#7E8CE0</color>
+    <color name="cardview">#997E8CE0</color>
 </resources>

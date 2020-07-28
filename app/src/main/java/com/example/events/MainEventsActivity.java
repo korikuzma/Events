@@ -1,12 +1,15 @@
 package com.example.events;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,13 +23,16 @@ public class MainEventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_events);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_layout);
     }
 
     @Override
     public void onResume(){
         super.onResume();
 
-        Button settingsBtn = findViewById(R.id.settingsBtn);
+        ImageButton settingsBtn = findViewById(R.id.settingsBtn);
         Button viewEventsBtn = findViewById(R.id.viewEventsBtn);
         Button addEventsBtn = findViewById(R.id.addEventsBtn);
 

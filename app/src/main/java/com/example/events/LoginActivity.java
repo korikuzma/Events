@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Hide app title bar
+        // hides action bar
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_login);

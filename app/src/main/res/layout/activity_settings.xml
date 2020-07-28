@@ -8,8 +8,13 @@
 
     <Button
         android:id="@+id/signOutBtn"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Sign Out"/>
+        android:text="Sign Out"
+        android:layout_margin="20dp"
+        android:background="@drawable/main_events_button_selector"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:padding="20dp"/>
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.events;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,11 @@ public class AddEventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_events);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+
+        getSupportActionBar().setTitle("EVENTS");
 
         // Access a Cloud Firestore instance from current Activity
         db = FirebaseFirestore.getInstance();

@@ -72,7 +72,8 @@
                 android:singleLine="false"
                 tools:ignore="Autofill"
                 android:layout_column="2"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/white"/>
         </TableRow>
 
         <TableRow
@@ -100,7 +101,8 @@
                 android:maxLength="10"
                 tools:ignore="Autofill"
                 android:layout_column="2"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/white"/>
 
         </TableRow>
         <TableRow
@@ -128,7 +130,8 @@
                 android:maxLength="7"
                 tools:ignore="Autofill"
                 android:layout_column="2"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/white"/>
         </TableRow>
 
         <TableRow
@@ -156,7 +159,8 @@
                 android:maxLength="22"
                 tools:ignore="Autofill"
                 android:layout_column="2"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/white"/>
         </TableRow>
 
         <TableRow
@@ -184,7 +188,8 @@
                 android:maxLength="22"
                 tools:ignore="Autofill"
                 android:layout_column="2"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/white"/>
         </TableRow>
 
         <TableRow
@@ -211,7 +216,8 @@
                 android:maxLength="2"
                 tools:ignore="Autofill"
                 android:layout_column="2"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:textColor="@color/white"/>
         </TableRow>
 
         <TableRow
@@ -222,6 +228,7 @@
             >
 
             <Button
+                android:background="@drawable/submit_button_selector"
                 android:id="@+id/submitEventBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
