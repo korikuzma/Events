@@ -26,6 +26,7 @@ public class MainEventsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+        getSupportActionBar().setElevation(0);
     }
 
     @Override

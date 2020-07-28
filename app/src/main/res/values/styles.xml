@@ -7,6 +7,5 @@
         <item name="colorAccent">@color/redPastel</item>
         <item name="android:textColorHint">@color/whiteOpacity</item>
         <item name="colorControlNormal">@color/whiteOpacity</item>
-<!--        <item name="android:actionBarStyle">@style/MyActionBar</item>-->
     </style>
 </resources>

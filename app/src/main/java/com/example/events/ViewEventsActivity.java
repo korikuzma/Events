@@ -35,6 +35,7 @@ public class ViewEventsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
+        getSupportActionBar().setElevation(0);
 
         db = FirebaseFirestore.getInstance();
         rv = (RecyclerView)findViewById(R.id.recycler_view);

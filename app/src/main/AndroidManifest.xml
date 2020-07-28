@@ -9,14 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/DarkTheme">
-        <activity android:name=".AddEventsActivity"></activity>
-        <activity android:name=".ViewEventsActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".MainEventsActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".AddEventsActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ViewEventsActivity" android:screenOrientation="portrait" />
+        <activity android:name=".SettingsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MainEventsActivity" android:screenOrientation="portrait" />
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
