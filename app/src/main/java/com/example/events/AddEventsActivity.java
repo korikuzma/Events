@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.BufferedReader;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class AddEventsActivity extends AppCompatActivity {
 
@@ -34,7 +36,7 @@ public class AddEventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_events);
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
         getSupportActionBar().setElevation(0);
 
@@ -51,19 +53,18 @@ public class AddEventsActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-        final Button submitEventBtn = (Button)findViewById(R.id.submitEventBtn);
-        final EditText eventName = (EditText)findViewById(R.id.addName);
-        final EditText eventDescription = (EditText)findViewById(R.id.addDescription);
-        final EditText eventDate = (EditText)findViewById(R.id.addDate);
-        final EditText eventTime = (EditText)findViewById(R.id.addTime);
-        final EditText eventResHall = (EditText)findViewById(R.id.addResHall);
-        final EditText eventLocation = (EditText)findViewById(R.id.addLocation);
-        final EditText eventCategory = (EditText)findViewById(R.id.addCategory);
+        final Button submitEventBtn = findViewById(R.id.submitEventBtn);
+        final EditText eventName = findViewById(R.id.addName);
+        final EditText eventDescription = findViewById(R.id.addDescription);
+        final EditText eventDate = findViewById(R.id.addDate);
+        final EditText eventTime = findViewById(R.id.addTime);
+        final EditText eventResHall = findViewById(R.id.addResHall);
+        final EditText eventLocation = findViewById(R.id.addLocation);
+        final EditText eventCategory = findViewById(R.id.addCategory);
 
         // When submit event button is pressed, save string values and store in firebase
         submitEventBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-
                 String  eventNameStr = eventName.getText().toString().toUpperCase().trim();
                 String  eventDescriptionStr = eventDescription.getText().toString().toUpperCase().trim();
                 String  eventDateStr = eventDate.getText().toString().trim();
@@ -97,6 +98,8 @@ public class AddEventsActivity extends AppCompatActivity {
                     // Start MainEventsActivity
                     Intent i = new Intent(AddEventsActivity.this, MainEventsActivity.class);
                     AddEventsActivity.this.startActivity(i);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Form not filled out correctly!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -123,7 +126,7 @@ public class AddEventsActivity extends AppCompatActivity {
         Date date = null;
 
         try {
-            date = (Date) formatter.parse(str_date + " " + str_time + "M");
+            date = formatter.parse(str_date + " " + str_time + "M");
         } catch (ParseException e) {
             e.printStackTrace();
         }

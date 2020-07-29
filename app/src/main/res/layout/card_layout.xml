@@ -25,6 +25,16 @@
             android:textColor="@color/white"
             android:textStyle="bold"/>
 
+        <ImageButton
+            android:id="@+id/create_calendar_event"
+            android:background="@drawable/ic_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textStyle="italic"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="Add to Calendar" />
+
         <TextView
             android:id="@+id/category"
             android:layout_width="wrap_content"
@@ -74,6 +84,5 @@
             android:layout_below="@+id/date"
             android:paddingTop="10dp"
             android:textColor="@color/white"/>
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

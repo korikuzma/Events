@@ -1,18 +1,15 @@
 package com.example.events;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import android.provider.CalendarContract;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import java.sql.Timestamp;
@@ -23,10 +20,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ViewEventsActivity extends AppCompatActivity {
-
-    private FirebaseFirestore db;
-    private FirestoreRecyclerAdapter adapter;
-    private RecyclerView rv;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference eventsRef = db.collection("events");
+    private EventAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,52 +33,79 @@ public class ViewEventsActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.action_bar_layout);
         getSupportActionBar().setElevation(0);
 
-        db = FirebaseFirestore.getInstance();
-        rv = (RecyclerView)findViewById(R.id.recycler_view);
-
         // query to keep showing events that haven't happened or events that haven't ended (assumes one hour event)
-        Query query = db.collection("events").whereGreaterThan("timestamp", getEndTimestamp());
+        Query query = eventsRef.whereGreaterThan("timestamp", getEndTimestamp());
 
         //recycler options
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
                 .setQuery(query, Event.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<Event, EventViewHolder>(options) {
-            @NonNull
-            @Override
-            public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
-                return new EventViewHolder(v);
-            }
+        adapter = new EventAdapter(options);
 
-            @Override
-            protected void onBindViewHolder(@NonNull EventViewHolder holder, int position, @NonNull Event model) {
-                holder.eventName.setText(model.getName());
-                holder.eventDescription.setText(model.getDescription());
-                holder.eventDate.setText(model.getDate());
-                holder.eventTime.setText(model.getTime());
-                holder.eventResHall.setText(model.getReshall());
-                holder.eventLocation.setText(model.getLocation());
-                holder.eventCategory.setText(model.getCategory());
-            }
-        };
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
-        rv.setHasFixedSize(true);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(adapter);
+        // When calendar is clicked, create a google calendar event
+        adapter.setOnItemClickListener(new EventAdapter.OnItemClickListener() {
+            @Override
+            public void onCalendarClick(DocumentSnapshot documentSnapshot, int position) {
+                Event event = documentSnapshot.toObject(Event.class);
+                String name = event.getName();
+                String location = event.getReshall() + " " + event.getLocation();
+                String description = event.getDescription();
+                String date = event.getDate();
+                String time = event.getTime();
+
+                createCalendarEvent(name, location, description, date, time);
+
+            }
+        });
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         adapter.startListening();
     }
-
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    public void createCalendarEvent(String name, String location, String description, String date, String time){
+        // Create new event in Google Calendar
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra(CalendarContract.Events.TITLE, name);
+        intent.putExtra(CalendarContract.Events.EVENT_LOCATION, location);
+        intent.putExtra(CalendarContract.Events.DESCRIPTION, description);
+
+
+        // Setting dates
+        long beginTime = convertStrToTime(date,time);
+
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime);
+        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, beginTime + 3600 * 1000);
+
+        intent.putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+        startActivity(intent);
+    }
+
+    // Converts string to time in milliseconds
+    public long convertStrToTime(String str_date, String str_time){
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+        Date date = null;
+
+        try {
+            date = (Date) formatter.parse(str_date + " " + str_time + "M");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
     }
 
     // Get one hour before timestamp
@@ -112,30 +135,5 @@ public class ViewEventsActivity extends AppCompatActivity {
         }
 
         return new Timestamp(date.getTime());
-    }
-
-    private class EventViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        TextView eventName;
-        TextView eventDescription;
-        TextView eventDate;
-        TextView eventTime;
-        TextView eventResHall;
-        TextView eventLocation;
-        TextView eventCategory;
-
-        EventViewHolder(@NonNull View itemView) {
-            super(itemView);
-            cv = (CardView)itemView.findViewById(R.id.card_view);
-            eventName = (TextView)itemView.findViewById(R.id.name);
-            eventDescription = (TextView)itemView.findViewById(R.id.description);
-            eventDate = (TextView)itemView.findViewById(R.id.date);
-            eventTime = (TextView)itemView.findViewById(R.id.time);
-            eventResHall = (TextView)itemView.findViewById(R.id.resHall);
-            eventLocation = (TextView)itemView.findViewById(R.id.location);
-            eventCategory = (TextView)itemView.findViewById(R.id.category);
-        }
-
-
     }
 }
